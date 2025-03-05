@@ -1,0 +1,22 @@
+name: Push Docker Image
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build & push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: docker login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME}}" --password-stdin
+
+      - name: build docker image
+        run: docker build -t techpoint247/flask-to-do-app:latest .
+
+      - name: push docker image to cloud
+        run: docker push techpoint247/flask-to-do-app:latest  
